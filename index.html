@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>面试题</title>
+	</head>
+	<body>
+		<h3>1.Dom1对象转成jquery对象</h3>
+		<p>对于已经是一个dom对象，只需要用$()把dom对象包装起来，就可以获得一个jquery对象，$(dom对象)</p>
+		<p>var v = document.getElementById("v");//dom对象<br />
+		   var $v = $(v);			//jquery对象
+		</p>
+		<input type="checkbox" id="v" value="" />
+		<label for="v">默认是不是必选</label>
+		<p id="demo1"></p>
+		<h3>数组中去除重复项【array的prototype】</h3>
+		<p>以数组[1111,2,4,5,3,12,21,3,2]</p>
+		<p id="demo2"></p>
+		<h3>js如何面向对象</h3>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var $v = $("#v");		//jquery对象
+			//var v = $v[0];			//dom对象
+			var v = $v.get(0);			//dom对象
+			$("#demo1").text(v.checked);
+			//去重==》方法一
+			var arr = [1111,2,4,5,3,12,21,3,2];
+			function removeRepeat(arr){
+				var i,tmpArr = [];
+				for(i in arr){
+					if(tmpArr.join(',').indexOf(arr[i]) == -1){//indexOf()=-1;代表要检索的值没有出现
+						tmpArr.push(arr[i]);
+					}
+				}
+				return tmpArr;
+			}
+			var r = removeRepeat(arr);
+			$("#demo2").text(r);
+			//去重==》方法二
+			Array.prototype.unique = function(){
+				var i,tmpArr = [];
+				for(i in this){
+					if(typeof this[i] != 'function'){
+						if(tmpArr.join(',').indexOf(this[i]) == -1){
+							tmpArr.push(this[i]);
+						}
+					}
+				}
+				return tmpArr;
+			}
+			var s = arr.unique();
+			$("#demo2").text(s);
+			//js面向对象
+			var name = "Du Shu Juan";
+			var email = "haole@qq.com";
+			var wesite = "http://coolshell.cn";
+			
+			var chenhao = {
+				name: 'Du Shu Juan',
+				email: 'haole@qq.com',
+				website:'ht'
+			}
+		</script>
+	</body>
+</html>
