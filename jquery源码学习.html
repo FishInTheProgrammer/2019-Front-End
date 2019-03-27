@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>jquery源码学习</title>
+		<script src="js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			//$.makeArray
+			var obj = Object('sky');
+			var objArr = $.makeArray(obj);
+			console.log(objArr);//["s","k","y"]
+			obj instanceof Array
+			false
+			objArr instanceof Array
+			true
+			
+			///////////////////////////////////////////////////////////
+			//grep过滤原始数组
+			//$.grep(被过滤的数组,过滤函数(当前数组元素,当前元素在数组的索引))
+			
+			var a = [1,0,null,'true',undefined,'false',4];
+			var b = $.grep(a,function(n,i){
+				return n;
+			})
+			console.log(b);//[1,'true,'false',4]
+			
+			//映射
+			var c = [[1,2],[3,4],[4,[6,7]]];
+			var d = $.map(c,function(item,i){
+				return item;
+			});
+			console.log(d);//[1, 2, 3, 4, 4, Array(2)]
+			//思考 如何将一个多维数组展开成一个一维数组
+			//借助$.map和$.isArray利用递归
+			function flatten(array){
+				return $.map(array,function(item){
+					return $.isArray(item)?flatten(item):item;
+				});
+			}
+			var e = [1,2,3],
+				f = [1,[1,2,3]],
+				g = [1,[2,3],[4,[5,6],7]];
+			console.log(flatten(e));
+			console.log(flatten(f));
+			console.log(flatten(g));
+			
+			//callbacks
+			function fn1(value){
+				console.log(value);
+			};
+			function fn2(value){
+				fn1("fn2 say: " + value);
+				return;
+			}
+			var callbacks = $.Callbacks();
+			//向回调函数列表添加新的回调函数
+			callbacks.add(fn1);
+			//向回调函数中传递参数,并执行回调函数
+			callbacks.fire("foo!");
+			callbacks.add(fn2);
+			callbacks.fire("bar!");
+			
+			//$.holdReady(true)
+// 			$.getScript("a.js",function(){});
+// 			$(function(){
+// 				a.say();
+// 			});
+			/*代码的意思是加载完a.js,然后再调用a的say方法.但是a.js需要下载,所以执行a.say会报错.这时,先$.holdReady(true),
+			这样$(function(){a.say()})中的a.say()就不会执行了，直到$.getScript("a.js",function(){$.holdReady(false)});
+			才可以执行，这时a.js加载完成，并执行结束后，调用回调方法，执行$.holdReady(false),恢复执行*/
+			
+		</script>
+	</body>
+</html>
